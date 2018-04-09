@@ -23,27 +23,13 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	Database d=new Database();
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/time", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome Rakesh! The client locale is {}.", locale);
-		
-		Date date = new Date();
-String s1 = "this is rakesh";
-		
-		
-		
-		model.addAttribute("serverTime", s1 );
-		
-		return "home";
-	}
+	
+	
 	
 	
 	
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * Simply selects the home view to render by returning its home page.
 	 */
 	@RequestMapping(value = "/index", method = RequestMethod.GET)
 	public String index(Locale locale, Model model) {
@@ -52,9 +38,32 @@ String s1 = "this is rakesh";
 		return "index";
 	}
 	
+	
+	
+	/**
+	 *  Simply selects the home view to render by returning its home page.
+	 */
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String firstpage(Locale locale, Model model) {
+		
+		
+		return "index";
+	}
+	
+	
+	/**
+	 *  selects the dashboard 
+	 */
+	@RequestMapping(value = "/dashboard", method = RequestMethod.GET)
+	public String dashboard(Locale locale, Model model) {
+		
+		
+		return "dashboard";
+	}
+	
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * selects the register page 
 	 */
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String register(Locale locale, Model model) {
@@ -65,20 +74,36 @@ String s1 = "this is rakesh";
 	
 	
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * register validation.
 	 */
 	@RequestMapping(value = "/register_validate", method = RequestMethod.GET)
-	public String register_val(Locale locale, Model model,@RequestParam("name") String name,@RequestParam("email") String email,@RequestParam("pass") String pass,@RequestParam("mob") String mob,@RequestParam("add") String add,@RequestParam("gender") String gender) {
+	public String register_val(Locale locale, Model model,@RequestParam("name") String name,@RequestParam("email") String email,@RequestParam("pass") String pass,@RequestParam("mob") String mob,@RequestParam("add") String add,@RequestParam("gender") String gender,@RequestParam("dob") String dob) {
 		
-		d.connectdb();
-		d.insert(name, pass, 1235, email, add, gender, "def", "def", "def");
+		long mobile_number=Long.parseLong(mob);
+		int n1=d.user_existing(email);
 		
-		return "register";
+		if(n1!=0) {
+		    
+			
+			model.addAttribute("reg_stats","Email Already Registered");
+			return "register";
+			
+			
+		}
+		else {
+			
+			d.insert(name, pass, mobile_number, email, add, gender, dob, "undef", "undef");
+			model.addAttribute("reg_stats"," Sign up Succesful");
+			return "register";
+			
+		}
+	
+	
 	}
 	
 	
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * testing
 	 */
 	@RequestMapping(value = "/testdb", method = RequestMethod.GET)
 	public String testDB(Locale locale,@RequestParam("email") String siteName, @RequestParam("pass") String passowrd,
@@ -94,7 +119,7 @@ String s1 = "this is rakesh";
 
 
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * editing the profile
 	 */
 	@RequestMapping(value = "/edit", method = RequestMethod.GET)
 	public String update(Locale locale,
@@ -110,7 +135,7 @@ String s1 = "this is rakesh";
 	
 	
 	/**
-	 * Simply selects the home view to render by returning its name.
+	 * login validation 
 	 */
 	@RequestMapping(value = "/login_validate", method = RequestMethod.GET)
 	public String login(Locale locale,@RequestParam("email") String email, @RequestParam("pass") String passowrd,
@@ -123,13 +148,14 @@ String s1 = "this is rakesh";
 		
 		if(n1!=0) {
 		    
-			model.addAttribute("login_stats", "login successful");
+			model.addAttribute("login_stats", "Login Successful");
 			model.addAttribute("userid",n1);
 			return "dashboard";
 			
 			
 		}
-		model.addAttribute("login_stats", "login unsuccessful");
+		model.addAttribute("login_stats", "fail");
+	
 		
 		return "index";
 	}

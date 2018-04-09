@@ -25,7 +25,7 @@ con=DriverManager.getConnection("jdbc:mysql://localhost:3306/witty","root","");
      
      
      
-     public void insert(String name,String pass,int mob,String email,String add,String gender,String dob,String s_que,String s_ans) 
+     public void insert(String name,String pass,long mob,String email,String add,String gender,String dob,String s_que,String s_ans) 
      { 
             try { 
               connectdb(); 
@@ -35,7 +35,7 @@ con=DriverManager.getConnection("jdbc:mysql://localhost:3306/witty","root","");
                pre.setString(2,name); 
                pre.setString(3,pass); 
                pre.setString(4,email); 
-               pre.setInt(5,mob); 
+               pre.setLong(5,mob); 
                pre.setString(6,add); 
                pre.setString(7,gender); 
                pre.setString(8,dob); 
@@ -61,7 +61,7 @@ con=DriverManager.getConnection("jdbc:mysql://localhost:3306/witty","root","");
 
 
      
-     public void update(int id,String name,int mob,String add,String gender,String dob) 
+     public void update(int id,String name,long mob,String add,String gender,String dob) 
      { 
             try { 
               connectdb(); 
@@ -71,7 +71,7 @@ con=DriverManager.getConnection("jdbc:mysql://localhost:3306/witty","root","");
                pre.setString(1,name); 
             
               
-               pre.setInt(2,mob); 
+               pre.setLong(2,mob); 
                pre.setString(3,add); 
                pre.setString(4,gender); 
                pre.setString(5,dob); 
@@ -131,4 +131,36 @@ con=DriverManager.getConnection("jdbc:mysql://localhost:3306/witty","root","");
             
     } 
 
+     public int user_existing (String email) 
+     { 
+           try { 
+               connectdb(); 
+               PreparedStatement pre = con.prepareStatement("select * from users where  email=?");     
+           
+               pre.setString(1,email); 
+               ResultSet rs = pre.executeQuery(); 
+               if(rs.next()) 
+                   { 
+                       System.out.println("ID "+rs.getInt(1)); 
+                       System.out.println("Name "+rs.getString(2)); 
+                       int user_id=rs.getInt(1);
+                       con.close(); 
+                       return user_id;
+                       
+                } 
+               else 
+               { 
+                     System.out.println("Login failed"); 
+                     con.close(); 
+                     return 0;
+               } 
+           } 
+
+           catch(Exception e) 
+           { 
+               e.printStackTrace(); 
+           }
+		return 0; 
+            
+    } 
 }

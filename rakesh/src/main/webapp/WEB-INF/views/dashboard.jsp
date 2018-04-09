@@ -1,9 +1,15 @@
 <%@page import="com.rakeshkp.spring.Database"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="true" import="java.sql.*" %>
+<%@ page session="true" import="java.sql.*" errorPage="index.jsp" %>
 
 
-<% session.setAttribute("userid", request.getAttribute("userid"));
+<% 
+
+
+
+if(session.getAttribute("userid")==null)
+session.setAttribute("userid", request.getAttribute("userid"));
+
 Database d2=new Database();
 
 int temp=(Integer)session.getAttribute("userid");
@@ -42,7 +48,7 @@ else
 
 
 
-    <title>Title</title>
+    <title>dashboard</title>
     <style>
         h3{
             color: #5385c1;
@@ -63,8 +69,8 @@ else
 
 
         }
-        #banner{
-            background-image: url("banner.jpg");
+         #banner{
+            background-image: url("https://avante.biz/wp-content/uploads/Wallpaper-Rain/Wallpaper-Rain-040.jpg");
             height: 450px;
         }
 
@@ -93,16 +99,17 @@ else
 <body bgcolor="#fff">
 <div id="banner">
     <br><br><br><br>
-    <h3 align="center" class="foo3" style="color: #fff">Security Management Using Cloud aspects</h3>
+   <h3 align="center" class="foo3" style="color: #fff">Witty Outfits</h3><br><br>
+    <p align="center" class="foo3" style="color: #fff"> Intern assignment</p>
 </div>
 
 
 <div class="pure-menu pure-menu-horizontal" style="background-color: #5385c1; height: 40px">
     <ul class="pure-menu-list foo">
-        <li class="pure-menu-item pure-menu-selected foo4"><a href="" class="pure-menu-link" style="color: white">View profile</a></li>
+        <li class="pure-menu-item pure-menu-selected foo4"><a href="#" class="pure-menu-link" style="color: white">View profile</a></li>
 
         <li class="pure-menu-item pure-menu-selected foo4"><a href="edit" class="pure-menu-link" style="color: white">Edit profile</a></li>
-        <li class="pure-menu-item pure-menu-selected foo4"><a href="admin.html" class="pure-menu-link" style="color: white">Logout</a></li>
+        <li class="pure-menu-item pure-menu-selected foo4"><a href="index?logout=yes" class="pure-menu-link" style="color: white">Logout</a></li>
 
   
 
@@ -142,14 +149,13 @@ else
       
 </table>
 </center>
-<%= session.getAttribute("userid") %>
 
 
+<br><br>
 <footer>
     <br>
-<p align="center" style="color: white" class="foo3">copyrights @TechCiti.com</p>
+<p align="center" style="color: white" class="foo3">copyrights @rakeshkp</p>
 </footer>
-<p> ${n1}</p>
-<P>  The time on the server is ${serverTime}. </P>
+
 </body>
 </html>

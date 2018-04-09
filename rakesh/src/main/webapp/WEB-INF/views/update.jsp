@@ -1,6 +1,6 @@
 <%@page import="com.rakeshkp.spring.Database"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="true" import="java.sql.*" %>
+<%@ page session="true" import="java.sql.*"  %>
 
 
 <% 
@@ -11,17 +11,19 @@ d2.connectdb();
 PreparedStatement pre = d2.con.prepareStatement("select * from users where id =?");     
 pre.setInt(1,temp); 
 ResultSet rs = pre.executeQuery(); 
+String update="";
 if(rs.next()) 
     { 
         System.out.println("Name= "+rs.getString(1)); 
         System.out.println("USN= "+rs.getString(2)); 
         System.out.println("Result= "+rs.getString(3)); 
+       
      
  } 
 else 
 { 
-      System.out.println("SELECTION FAILED"); 
-    
+      System.out.println("selection FAILED"); 
+     
 } 
 
 
@@ -42,7 +44,7 @@ else
 
 
 
-    <title>Title</title>
+    <title>Update</title>
     <style>
         h3{
             color: #5385c1;
@@ -63,8 +65,8 @@ else
 
 
         }
-        #banner{
-            background-image: url("banner.jpg");
+      #banner{
+            background-image: url("https://avante.biz/wp-content/uploads/Wallpaper-Rain/Wallpaper-Rain-040.jpg");
             height: 450px;
         }
 
@@ -93,16 +95,18 @@ else
 <body bgcolor="#fff">
 <div id="banner">
     <br><br><br><br>
-    <h3 align="center" class="foo3" style="color: #fff">Security Management Using Cloud aspects</h3>
+   <h3 align="center" class="foo3" style="color: #fff">Witty Outfits</h3><br><br>
+    <p align="center" class="foo3" style="color: #fff"> Intern assignment</p>
 </div>
 
 
 <div class="pure-menu pure-menu-horizontal" style="background-color: #5385c1; height: 40px">
     <ul class="pure-menu-list foo">
-        <li class="pure-menu-item pure-menu-selected foo4"><a href="#" class="pure-menu-link" style="color: white">View profile</a></li>
+        <li class="pure-menu-item pure-menu-selected foo4"><a href="dashboard" class="pure-menu-link" style="color: white">View profile</a></li>
 
-        <li class="pure-menu-item pure-menu-selected foo4"><a href="owner.html" class="pure-menu-link" style="color: white">Edit profile</a></li>
-        <li class="pure-menu-item pure-menu-selected foo4"><a href="admin.html" class="pure-menu-link" style="color: white">Logout</a></li>
+        <li class="pure-menu-item pure-menu-selected foo4"><a href="#" class="pure-menu-link" style="color: white">Edit profile</a></li>
+        <li class="pure-menu-item pure-menu-selected foo4"><a href="index?logout=yes" class="pure-menu-link" style="color: white">Logout</a></li>
+
 
   
 
@@ -112,6 +116,7 @@ else
 <br>
 
 <center>
+<h3> <%= update %></h3>
 <form class="pure-form" method="" action="">
     <fieldset>
 <legend>Update or Edit Your Profile</legend><br><br>
@@ -134,7 +139,7 @@ else
       
 </table>
 <br><br>
- <button  type="submit" name="edit" class="pure-button pure-button-primary" value="update">Sign in</button>
+ <button  type="submit" name="edit" class="pure-button pure-button-primary" value="update">Update</button>
         <button  type="reset" class="pure-button pure-button-primary">Clear</button>
         
          </fieldset>
@@ -157,10 +162,12 @@ else
 
 String x = request.getParameter("edit");
 if(x!=null && x.equals("update"))
-{
-	System.out.println("success on function");
-     d2.update(temp,request.getParameter("name"), Integer.parseInt(request.getParameter("mob")), request.getParameter("add"), request.getParameter("gender"), request.getParameter("dob"));
+{ 
+	long mob_num=Long.parseLong(request.getParameter("mob"));
+     d2.update(temp,request.getParameter("name"), mob_num, request.getParameter("add"), request.getParameter("gender"), request.getParameter("dob"));
      
-	
+     update= "Updated Succesfully";
+     String redirectURL = "dashboard";
+     response.sendRedirect(redirectURL);
 }
 %>
